@@ -7,6 +7,7 @@
 //  https://www.hackingwithswift.com/read/32/overview
 //
 
+import CoreSpotlight
 import UIKit
 
 @UIApplicationMain
@@ -42,6 +43,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if userActivity.activityType == CSSearchableItemActionType {
+            if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+                if let navigationController = window?.rootViewController as? UINavigationController {
+                    if let viewController = navigationController.topViewController as? ViewController {
+                        viewController.showTutorial(Int(uniqueIdentifier)!)
+                    }
+                }
+            }
+        }
+        
+        return true
+    }
 
 }
 
